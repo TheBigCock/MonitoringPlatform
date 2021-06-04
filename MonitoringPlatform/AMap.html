@@ -1,0 +1,212 @@
+﻿<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>地图</title>
+    <style>
+        body, html, #container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .amap-icon img,
+        .amap-marker-content img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .marker {
+            position: absolute;
+            top: 28px;
+            right: -24px;
+            color: #fff;
+            padding: 4px 6px;
+            box-shadow: 1px 1px 1px rgba(10, 10, 10, .2);
+            white-space: nowrap;
+            font-size: 12px;
+            font-family: "Cursive";
+            background-color: #1296db;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+
+
+    <!--引入高德地图JSAPI -->
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.10&key=31eca3d61a4dfb57d3639771cfc3190e"></script>
+
+    <!-- UI组件库 1.0 -->
+    <script src="http://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+
+    <script type="text/javascript">
+
+        var map;
+        function clear() {
+            document.getElementById('container').innerHTML = "";
+        }
+
+        function init(x, y, zoom) {
+            if (x == 0 || y == 0) {
+                x = 104.58458;
+                y = 34.123298;
+                zoom = 5;
+            }
+            map = new AMap.Map('container', {
+                center: [x, y],
+                zoom: zoom
+            });
+        }
+
+        var src = "./Resources/";
+        var markerList = {};
+        function setMarkerContent(marker, message, iconName) {
+            // 自定义点标记内容
+            var markerContent = document.createElement("div");
+
+            // 点标记中的图标
+            if (iconName != "") {
+                var markerImg = document.createElement("img");
+                markerImg.className = "markerlnglat";
+                markerImg.src = src + iconName + ".png";
+                markerContent.appendChild(markerImg);
+            }
+
+            // 点标记中的文本
+            if (message != "") {
+                var markerSpan = document.createElement("span");
+                markerSpan.className = 'marker';
+                markerSpan.innerHTML = message;
+                markerContent.appendChild(markerSpan);
+            }
+
+            marker.setContent(markerContent); //更新点标记内容
+        }
+
+        function addMarker(x, y, message, iconName, id) {
+            if (map != null) {
+                if (x != 0 && y != 0 && markerList[id] == null) {
+                    var marker = new AMap.Marker({
+                        icon: "./Resources/address.png",
+                        position: new AMap.LngLat(x, y),
+                        offset: new AMap.Pixel(-13, -30)
+                    });
+                    marker.setMap(map);
+                    markerList[id] = marker;
+
+                    setMarkerContent(markerList[id], message, iconName);
+                }
+            }
+        }
+
+        function deleteMarker(id) {
+            if (map != null && markerList[id] != null) {
+                markerList[id].setMap(null);
+                markerList[id] = null;
+            }
+        }
+
+        function updateMarker(x, y, message, iconName, id) {
+            if (markerList[id] != null) {
+                markerList[id].setPosition([x, y]); //更新点标记位置
+            }
+            else
+                addMarker(x, y, message, iconName, id);
+        }
+
+        var pathSimplifierIns;
+        function initTransportRoute() {
+            if (pathSimplifierIns == null)
+                AMapUI.load(['ui/misc/PathSimplifier'], function (PathSimplifier) {
+
+                    if (!PathSimplifier.supportCanvas) {
+                        alert('当前环境不支持 Canvas！');
+                        return;
+                    }
+
+                    var pathSimplifierIns = new PathSimplifier({
+                        zIndex: 100,
+                        autoSetFitView: false,
+                        map: map, //所属的地图实例
+
+                        getPath: function (pathData, pathIndex) {
+
+                            return pathData.path;
+                        },
+                        getHoverTitle: function (pathData, pathIndex, pointIndex) {
+
+                            if (pointIndex >= 0) {
+                                //point 
+                                //return pathData.name + '，点：' + pathData.path[pathIndex];
+                            }
+
+                            return pathData.name;
+                        },
+                        renderOptions: {
+                            pathLineStyle: {
+                                dirArrowStyle: true
+                            },
+                            getPathStyle: function (pathItem, zoom) {
+
+                                var color = "#1296db",
+                                    lineWidth = Math.round(4 * Math.pow(1.1, zoom - 4));
+
+                                return {
+                                    pathLineStyle: {
+                                        strokeStyle: color,
+                                        lineWidth: lineWidth
+                                    },
+                                    pathLineSelectedStyle: {
+                                        lineWidth: lineWidth + 2
+                                    },
+                                    pathNavigatorStyle: {
+                                        fillStyle: color
+                                    }
+                                }
+                            },
+                            renderAllPointsIfNumberBelow: -1 //绘制路线节点，如不需要可设置为-1
+                        }
+                    });
+
+                    window.pathSimplifierIns = pathSimplifierIns;
+                });
+            pathPoints = [];
+            ifStart = true;
+        }
+
+        var ifStart = true;
+        var pathData;
+        var pathPoints = [];
+        function drawTransportRoute(pointsString, pathName, ifEnd) {
+            if (pathSimplifierIns == null) {
+                initTransportRoute();
+            }
+            points = JSON.parse(pointsString);
+            for (var i = 0; i < points.length; i++) {
+                if (points[i].x != 0 && points[i].y != 0)
+                    pathPoints[pathPoints.length] = [points[i].x, points[i].y];
+            }
+            if (pathPoints.length > 0 && pathSimplifierIns != null) {
+                if (ifStart) {
+                    map.setZoomAndCenter(14, pathPoints[0]);
+                    ifStart = false;
+                    updateMarker(pathPoints[0][0], pathPoints[0][1], "", "start", "startMarker");
+                }
+
+                pathData = [{
+                    name: pathName,
+                    path: pathPoints
+                }];
+                pathSimplifierIns.setData(pathData);
+                updateMarker(pathPoints[pathPoints.length - 1][0], pathPoints[pathPoints.length - 1][1], "", "truck", "endMarker");
+                if (ifEnd)
+                    setMarkerContent(markerList["endMarker"],"","end");
+            }
+        }
+
+    </script>
+</body>
+</html>
+

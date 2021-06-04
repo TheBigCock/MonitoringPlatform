@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4B0C14C3-00EA-4A0E-B35E-C9378F248F27}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>MonitoringPlatform</RootNamespace>
+    <AssemblyName>MonitoringPlatform</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Json100r3\Bin\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="RestSharp, Version=106.5.4.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.5.4\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\Message.cs" />
+    <Compile Include="Data\MonitoringData.cs" />
+    <Compile Include="Data\ServerResponse.cs" />
+    <Compile Include="Data\Task.cs" />
+    <Compile Include="Data\Coordinate.cs" />
+    <Compile Include="Data\TaskDetail.cs" />
+    <Compile Include="HttpServerLib\ActionResult.cs" />
+    <Compile Include="HttpServerLib\BaseHeader.cs" />
+    <Compile Include="HttpServerLib\HeadersHelper.cs" />
+    <Compile Include="HttpServerLib\HttpRequest.cs" />
+    <Compile Include="HttpServerLib\HttpResponse.cs" />
+    <Compile Include="HttpServerLib\HttpServer.cs" />
+    <Compile Include="HttpServerLib\HttpService.cs" />
+    <Compile Include="HttpServerLib\ILoggercs.cs" />
+    <Compile Include="HttpServerLib\IServer.cs" />
+    <Compile Include="HttpServerLib\Protocols.cs" />
+    <Compile Include="HttpServerLib\RequestHeaders.cs" />
+    <Compile Include="HttpServerLib\ResponseHeaders.cs" />
+    <Compile Include="HttpServerLib\ResponseHelper.cs" />
+    <Compile Include="HttpServerLib\RouteAttribute.cs" />
+    <Compile Include="HttpServerLib\RouteMethod.cs" />
+    <Compile Include="HttpServerLib\ServiceModule.cs" />
+    <Compile Include="HttpServerLib\ServiceRoute.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\DatetimeUtil.cs" />
+    <Compile Include="Utils\DbOperation.cs" />
+    <Compile Include="Data\User.cs" />
+    <Compile Include="From\ChartDetailForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="From\ChartDetailForm.Designer.cs">
+      <DependentUpon>ChartDetailForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="From\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="From\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="From\NewDirectorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="From\NewDirectorForm.Designer.cs">
+      <DependentUpon>NewDirectorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="From\NewProductForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="From\NewProductForm.Designer.cs">
+      <DependentUpon>NewProductForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="From\NewTruckForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="From\NewTruckForm.Designer.cs">
+      <DependentUpon>NewTruckForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ProductTemperature.cs" />
+    <Compile Include="Data\ProductCategory.cs" />
+    <Compile Include="Data\Product.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="From\StartFrom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="From\StartFrom.Designer.cs">
+      <DependentUpon>StartFrom.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\HttpInterface.cs" />
+    <Compile Include="Utils\HttpServices.cs" />
+    <Compile Include="Utils\HttpServerHelper.cs" />
+    <Compile Include="Utils\StateCode.cs" />
+    <Compile Include="Utils\TcpServer.cs" />
+    <Compile Include="Data\Temperature.cs" />
+    <Compile Include="Data\Truck.cs" />
+    <EmbeddedResource Include="From\ChartDetailForm.resx">
+      <DependentUpon>ChartDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="From\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="From\NewDirectorForm.resx">
+      <DependentUpon>NewDirectorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="From\NewProductForm.resx">
+      <DependentUpon>NewProductForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="From\NewTruckForm.resx">
+      <DependentUpon>NewTruckForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="From\StartFrom.resx">
+      <DependentUpon>StartFrom.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AMap.html">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Database.accdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\sure.png" />
+    <None Include="Resources\delete.png" />
+    <None Include="Resources\add.png" />
+    <None Include="Resources\cancel.png" />
+    <None Include="Resources\search.png" />
+    <Content Include="Resources\truck.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\start.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\end.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\address.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
